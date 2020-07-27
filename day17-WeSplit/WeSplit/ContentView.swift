@@ -27,14 +27,14 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var checkAmount = "" // <- User input must be text, therefore string. (1)
-    @State private var numberOfPeople = 2
+    @State private var numberOfPeople = ""
     @State private var tipPercentage = 2 // <- Index, so this represents 20. v
     
     let tipPercentages = [10, 15, 20, 25, 0]
     
     var totalPerPerson: Double {
         // Calculate the total per person here. (4)
-        let peopleCount = Double(numberOfPeople + 2) // <- Converting everything to double to calculate $$ accurately.
+        let peopleCount = Double(numberOfPeople) ?? 0 // <- Converting everything to double to calculate $$ accurately.
         let tipSelection = Double(tipPercentages[tipPercentage])
         let orderAmount = Double(checkAmount) ?? 0
         
@@ -45,19 +45,30 @@ struct ContentView: View {
         return amountPerPerson
     }
     
+    var totalAmount: Double {
+        let tipSelection = Double(tipPercentages[tipPercentage])
+        let orderAmount = Double(checkAmount) ?? 0
+        
+        let tipValue = orderAmount / 100 * tipSelection
+        return orderAmount + tipValue
+    }
+    
     var body: some View {
         NavigationView {
             Form {
                 Section {
-                    TextField("Amount", text: $checkAmount) // <- First string is placeholder value. (1)
+                    TextField("Check Amount", text: $checkAmount) // <- First string is placeholder value. (1)
                     // Also this is a two-way binding, so changes are being watched.
                         .keyboardType(.decimalPad) // <- Tabbed bc it's one level deeper. Not required.
                     
-                    Picker("Number of people", selection: $numberOfPeople) {
-                        ForEach(2..<100) {
-                            Text("\($0) people")
-                        }
-                    }
+                    TextField("Number of People", text: $numberOfPeople)
+                        .keyboardType(.numberPad)
+                    
+//                    Picker("Number of people", selection: $numberOfPeople) {
+//                        ForEach(2..<100) {
+//                            Text("\($0) people")
+//                        }
+//                    }
                 }
                 
                 Section(header: Text("How much tip do you want to leave?")) {
@@ -71,7 +82,11 @@ struct ContentView: View {
                     .pickerStyle(SegmentedPickerStyle())
                 }
                 
-                Section {
+                Section(header: Text("Total Amount Due")) {
+                    Text("$\(totalAmount, specifier: "%.2f")")
+                }
+                
+                Section(header: Text("Amount per person")) {
                     Text("$\(totalPerPerson, specifier: "%.2f")")
                 }
             }
