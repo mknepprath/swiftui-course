@@ -11,13 +11,15 @@ import SwiftUI
 // Nesting lots of stacks is ok. And normal!
 
 // MARK: 2. Showing the player’s score with an alert
-
+// ...
 
 struct ContentView: View {
     @State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Russia", "Spain", "UK", "US"].shuffled()
     @State private var correctAnswer = Int.random(in: 0...2)
     @State private var showingScore = false
+    @State private var score = 0
     @State private var scoreTitle = ""
+    @State private var scoreMessage = ""
     
     var body: some View {
         ZStack {
@@ -46,13 +48,16 @@ struct ContentView: View {
                     }
                 }
                 
+                Text("\(score) points")
+                    .foregroundColor(.white)
+                
                 Spacer()
             }
         }
         .alert(isPresented: $showingScore) {
             Alert(
                 title: Text(scoreTitle),
-                message: Text("Your score is ???"),
+                message: Text(scoreMessage),
                 dismissButton: .default(Text("Continue")) {
                     self.askQuestion()
                 }
@@ -63,8 +68,11 @@ struct ContentView: View {
     func flagTapped(_ number: Int) {
         if number == correctAnswer {
             scoreTitle = "Correct"
+            score += 1
+            scoreMessage = "Your score is \(score)"
         } else {
-            scoreTitle = "Wrong"
+            scoreTitle = "Wrong!"
+            scoreMessage = "That's the flag of \(countries[number])"
         }
         showingScore = true
     }
