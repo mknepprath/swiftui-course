@@ -34,7 +34,7 @@ struct ContentView: View {
     
     var totalPerPerson: Double {
         // Calculate the total per person here. (4)
-        let peopleCount = Double(numberOfPeople) ?? 0 // <- Converting everything to double to calculate $$ accurately.
+        let peopleCount = Double(numberOfPeople) ?? 1 // <- Converting everything to double to calculate $$ accurately.
         let tipSelection = Double(tipPercentages[tipPercentage])
         let orderAmount = Double(checkAmount) ?? 0
         
@@ -51,6 +51,11 @@ struct ContentView: View {
         
         let tipValue = orderAmount / 100 * tipSelection
         return orderAmount + tipValue
+    }
+    
+    // MARK: Day 24: Add a conditional modifier
+    var noTip: Bool {
+        return tipPercentages[tipPercentage] == 0
     }
     
     var body: some View {
@@ -84,6 +89,7 @@ struct ContentView: View {
                 
                 Section(header: Text("Total Amount Due")) {
                     Text("$\(totalAmount, specifier: "%.2f")")
+                        .foregroundColor(noTip ? .red : .primary)
                 }
                 
                 Section(header: Text("Amount per person")) {

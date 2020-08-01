@@ -127,6 +127,21 @@ struct GridStack<Content: View>: View { // Generics
     }
 }
 
+// MARK: Day 24: Views and modifiers: Wrap up
+struct BlueTitle: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .font(.largeTitle)
+            .foregroundColor(.blue)
+    }
+}
+
+extension View {
+    func blueTitleStyle() -> some View {
+        self.modifier(BlueTitle())
+    }
+}
+
 struct ContentView: View {
 //    @State private var useRedText = false (6)
     
@@ -197,12 +212,15 @@ struct ContentView: View {
 //            .frame(width: 300, height: 300)
 //            .watermarked(with: "Hacking with Swift")
         
-        GridStack(rows: 4, columns: 4) { row, col in
-            HStack {
-                Image(systemName: "\(row * 4 + col).circle")
-                Text("R\(row) C\(col)")
-            }
-        }
+//        GridStack(rows: 4, columns: 4) { row, col in
+//            HStack {
+//                Image(systemName: "\(row * 4 + col).circle")
+//                Text("R\(row) C\(col)")
+//            }
+//        }
+        
+        Text("Hello World")
+            .blueTitleStyle()
     }
 }
 
