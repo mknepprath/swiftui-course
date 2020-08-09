@@ -22,6 +22,7 @@ struct ContentView: View {
     @State private var usedWords = [String]()
     @State private var rootWord = ""
     @State private var newWord = ""
+    @State private var score = 0
     
     @State private var errorTitle = ""
     @State private var errorMessage = ""
@@ -40,12 +41,20 @@ struct ContentView: View {
                     Text($0)
                 }
                 .listStyle(PlainListStyle())
+                
+                Text("\(score) points")
+                    .padding()
             }
             .navigationBarTitle(rootWord)
             .onAppear(perform: startGame)
             .alert(isPresented: $showingError) {
                 Alert(title: Text(errorTitle), message: Text(errorMessage), dismissButton: .default(Text("OK")))
             }
+            .navigationBarItems(trailing: ( Button("New Word", action: {
+                usedWords = [String]()
+                score = 0
+                startGame()
+            }) ))
         }
     }
     
@@ -71,6 +80,18 @@ struct ContentView: View {
             wordError(title: "Word not recognized", message: "You can't just make them up, you know!")
             return
         }
+        
+        guard isLongEnough(word: answer) else {
+            wordError(title: "Word too short", message: "You must use more than 3 words")
+            return
+        }
+        
+        guard isNewWord(word: answer) else {
+            wordError(title: "Can't repeat the word", message: "Come up with new words!")
+            return
+        }
+        
+        score += answer.count
         
         usedWords.insert(answer, at: 0) // <- Adds to beginning of list instead of end (.append())
         newWord = ""
@@ -113,6 +134,14 @@ struct ContentView: View {
         let misspelledRange = checker.rangeOfMisspelledWord(in: word, range: range, startingAt: 0, wrap: false, language: "en")
         
         return misspelledRange.location == NSNotFound
+    }
+    
+    func isLongEnough(word: String) -> Bool {
+        return word.count > 3
+    }
+    
+    func isNewWord(word: String) -> Bool {
+        return word.lowercased() != rootWord.lowercased()
     }
     
     func wordError(title: String, message: String) {
