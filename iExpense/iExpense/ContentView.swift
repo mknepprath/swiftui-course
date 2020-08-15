@@ -7,77 +7,68 @@
 
 import SwiftUI
 
-//class User: ObservableObject {
-//    @Published var firstName = "Bilbo"
-//    @Published var lastName = "Baggins"
-//}
-
-struct SecondView: View {
-    var name: String
-    
-    @Environment(\.presentationMode) var presentationMode
-    
-    var body: some View {
-        Text("Hello, \(name)!")
-        
-        Button("Dismiss") {
-            self.presentationMode.wrappedValue.dismiss()
+class Expenses: ObservableObject {
+    @Published var items: [ExpenseItem] {
+        didSet {
+            let encoder = JSONEncoder()
+            if let encoded = try? encoder.encode(items) {
+                UserDefaults.standard.set(encoded, forKey: "Items")
+            }
         }
+    }
+    
+    init() {
+        if let items = UserDefaults.standard.data(forKey: "Items") {
+            let decoder = JSONDecoder()
+            if let decoded = try? decoder.decode([ExpenseItem].self, from: items) {
+                self.items = decoded
+                return
+            }
+        }
+
+        self.items = []
     }
 }
 
 struct ContentView: View {
-//    @ObservedObject var user = User()
+    @ObservedObject var expenses = Expenses()
     
-//    @State private var showingSheet = false
-    
-//    @State private var numbers = [Int]()
-//    @State private var currentNumber = 1
-    
-    @State private var tapCount = UserDefaults.standard.integer(forKey: "Tap")
+    @State private var showingAddExpense = false
 
     var body: some View {
-//        VStack {
-//            Text("Your name is \(user.firstName) \(user.lastName).")
-//
-//            TextField("First name", text: $user.firstName)
-//            TextField("Last name", text: $user.lastName)
-//        }
-        
-//        Button("Show Sheet") {
-//            self.showingSheet.toggle()
-//        }
-//        .sheet(isPresented: $showingSheet) {
-//            SecondView(name: "@mknepprath")
-//        }
-        
-//        NavigationView {
-//            VStack {
-//                List {
-//                    ForEach(numbers, id: \.self) {
-//                        Text("\($0)")
-//                    }
-//                    .onDelete(perform: removeRows)
-//                }
-////                .listStyle(PlainListStyle())
-//
-//                Button("Add Number") {
-//                    self.numbers.append(self.currentNumber)
-//                    self.currentNumber += 1
-//                }
-//            }
-//            .navigationBarItems(leading: EditButton())
-//        }
-        
-        Button("Tap count: \(tapCount)") {
-            self.tapCount += 1
-            UserDefaults.standard.set(self.tapCount, forKey: "Tap")
+        NavigationView {
+            List {
+                ForEach(expenses.items) { item in
+                    HStack {
+                        VStack(alignment: .leading) {
+                            Text(item.name)
+                                .font(.headline)
+                            Text(item.type)
+                        }
+
+                        Spacer()
+                        Text("$\(item.amount)")
+                    }
+                }
+                .onDelete(perform: removeItems)
+            }
+            .navigationBarTitle("iExpense")
+            .navigationBarItems(trailing:
+                Button(action: {
+                    self.showingAddExpense = true
+                }) {
+                    Image(systemName: "plus")
+                }
+            )
+            .sheet(isPresented: $showingAddExpense) {
+                AddView(expenses: self.expenses)
+            }
         }
     }
     
-//    func removeRows(at offsets: IndexSet) {
-//        numbers.remove(atOffsets: offsets)
-//    }
+    func removeItems(at offsets: IndexSet) {
+        expenses.items.remove(atOffsets: offsets)
+    }
 }
 
 struct ContentView_Previews: PreviewProvider {
