@@ -41,8 +41,19 @@ struct ContentView: View {
                 ForEach(expenses.items) { item in
                     HStack {
                         VStack(alignment: .leading) {
-                            Text(item.name)
-                                .font(.headline)
+                            if (item.amount > 100) {
+                                Text(item.name)
+                                    .font(.headline)
+                                    .foregroundColor(.red)
+                            } else if (item.amount < 10) {
+                                Text(item.name)
+                                    .font(.headline)
+                                    .foregroundColor(.primary)
+                            } else {
+                                Text(item.name)
+                                    .font(.headline)
+                                    .foregroundColor(.purple)
+                            }
                             Text(item.type)
                         }
 
@@ -53,12 +64,15 @@ struct ContentView: View {
                 .onDelete(perform: removeItems)
             }
             .navigationBarTitle("iExpense")
-            .navigationBarItems(trailing:
-                Button(action: {
-                    self.showingAddExpense = true
-                }) {
-                    Image(systemName: "plus")
-                }
+            .navigationBarItems(
+                leading:
+                    EditButton(),
+                trailing:
+                    Button(action: {
+                        self.showingAddExpense = true
+                    }) {
+                        Image(systemName: "plus")
+                    }
             )
             .sheet(isPresented: $showingAddExpense) {
                 AddView(expenses: self.expenses)

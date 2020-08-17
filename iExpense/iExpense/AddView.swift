@@ -17,6 +17,9 @@ struct AddView: View {
     @ObservedObject var expenses: Expenses
     
     @Environment(\.presentationMode) var presentationMode
+    
+    @State private var showingAlert = false
+    @State private var alertMessage = ""
 
     var body: some View {
         NavigationView {
@@ -36,8 +39,14 @@ struct AddView: View {
                     let item = ExpenseItem(name: self.name, type: self.type, amount: actualAmount)
                     self.expenses.items.append(item)
                     self.presentationMode.wrappedValue.dismiss()
+                } else {
+                    alertMessage = "\(self.amount) is not a valid amount."
+                    showingAlert = true
                 }
             })
+            .alert(isPresented: $showingAlert) {
+                Alert(title: Text("Not a number"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+            }
         }
     }
 }
