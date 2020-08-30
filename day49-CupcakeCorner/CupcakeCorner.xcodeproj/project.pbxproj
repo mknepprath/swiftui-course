@@ -11,8 +11,6 @@
 		2204B24D24FB0A5E00B52F36 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204B24C24FB0A5E00B52F36 /* ContentView.swift */; };
 		2204B24F24FB0A6000B52F36 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2204B24E24FB0A6000B52F36 /* Assets.xcassets */; };
 		2204B25224FB0A6000B52F36 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2204B25124FB0A6000B52F36 /* Preview Assets.xcassets */; };
-		2204B25A24FB4D5300B52F36 /* AddressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204B25924FB4D5300B52F36 /* AddressView.swift */; };
-		2204B25C24FB4E1D00B52F36 /* CheckoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2204B25B24FB4E1D00B52F36 /* CheckoutView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,8 +20,6 @@
 		2204B24E24FB0A6000B52F36 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2204B25124FB0A6000B52F36 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		2204B25324FB0A6000B52F36 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		2204B25924FB4D5300B52F36 /* AddressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressView.swift; sourceTree = "<group>"; };
-		2204B25B24FB4E1D00B52F36 /* CheckoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckoutView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,8 +54,6 @@
 			children = (
 				2204B24A24FB0A5E00B52F36 /* CupcakeCornerApp.swift */,
 				2204B24C24FB0A5E00B52F36 /* ContentView.swift */,
-				2204B25B24FB4E1D00B52F36 /* CheckoutView.swift */,
-				2204B25924FB4D5300B52F36 /* AddressView.swift */,
 				2204B24E24FB0A6000B52F36 /* Assets.xcassets */,
 				2204B25324FB0A6000B52F36 /* Info.plist */,
 				2204B25024FB0A6000B52F36 /* Preview Content */,
@@ -146,8 +140,6 @@
 			files = (
 				2204B24D24FB0A5E00B52F36 /* ContentView.swift in Sources */,
 				2204B24B24FB0A5E00B52F36 /* CupcakeCornerApp.swift in Sources */,
-				2204B25C24FB4E1D00B52F36 /* CheckoutView.swift in Sources */,
-				2204B25A24FB4D5300B52F36 /* AddressView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
